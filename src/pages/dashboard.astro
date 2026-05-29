@@ -1,0 +1,20 @@
+---
+const res = await fetch("http://localhost:4321/api/users");
+const data = await res.json();
+---
+
+<html>
+  <body>
+    <h1>User Dashboard</h1>
+
+    {data.success && (
+      <ul>
+        {data.data.map((user: any) => (
+          <li>
+            <strong>{user.name}</strong> — {user.email}
+          </li>
+        ))}
+      </ul>
+    )}
+  </body>
+</html>
