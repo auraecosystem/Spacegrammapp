@@ -1,0 +1,19 @@
+---
+const token = Astro.request.headers.get("authorization");
+---
+
+<html>
+  <body>
+    <h1>Protected Dashboard</h1>
+
+    <script>
+      const token = localStorage.getItem("token");
+
+      fetch("/api/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    </script>
+  </body>
+</html>
