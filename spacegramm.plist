@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <key>CFBundleName</key>
+  <string>Spacegramm</string>
+
+  <key>CFBundleIdentifier</key>
+  <string>com.spacegramm.desktop</string>
+
+  <key>CFBundleVersion</key>
+  <string>1.0.0</string>
+
+  <key>CFBundleShortVersionString</key>
+  <string>1.0.0</string>
+
+  <key>CFBundleExecutable</key>
+  <string>Spacegramm</string>
+
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+
+  <key>CFBundleSupportedPlatforms</key>
+  <array>
+    <string>MacOSX</string>
+  </array>
+
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>tg</string>
+        <string>tonsite</string>
+      </array>
+    </dict>
+  </array>
+
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Mic access for voice messages.</string>
+
+  <key>NSCameraUsageDescription</key>
+  <string>Camera access for video calls.</string>
+
+  <key>NSLocationUsageDescription</key>
+  <string>Location sharing in chats.</string>
+
+</dict>
+</plist>
