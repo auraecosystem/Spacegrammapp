@@ -1,0 +1,21 @@
+---
+const token = Astro.cookies.get("token")?.value;
+
+const res = await fetch("http://localhost:4321/api/users", {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
+const data = await res.json();
+---
+
+<h1>Web4 Dashboard</h1>
+
+{data.data?.map((u) => (
+  <div>
+    <h3>{u.name}</h3>
+    <p>{u.email}</p>
+    <p>Wallet: {u.wallet_address ?? "Not linked"}</p>
+  </div>
+))}
