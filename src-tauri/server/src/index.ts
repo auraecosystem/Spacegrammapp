@@ -1,0 +1,148 @@
+import Fastify from "fastify";
+import { WebSocketServer } from "ws";
+import jwt from "jsonwebtoken";
+import http from "node:http";
+
+const app = Fastify({
+  logger: true,
+});
+
+const SECRET = "spacegramm-dev-secret";
+
+interface Client {
+  id: string;
+  socket: WebSocket;
+  username: string;
+}
+
+const messages: any[] = [];
+
+const server = http.createServer(app.server);
+
+const wss = new WebSocketServer({
+  server,
+});
+
+const clients = new Map<string, Client>();
+
+app.get("/", async () => {
+  return {
+    name: "Spacegramm Gateway",
+    status: "online",
+  };
+});
+
+app.post("/auth/login", async (request: any) => {
+  const { username } = request.body;
+
+  if (!username) {
+    return {
+      error: "Username required",
+    };
+  }
+
+  const token = jwt.sign(
+    {
+      username,
+    },
+    SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
+
+  return {
+    token,
+  };
+});
+
+wss.on("connection", (socket, request) => {
+  try {
+    const url = new URL(request.url!, "http://localhost");
+
+    const token = url.searchParams.get("token");
+
+    if (!token) {
+      socket.close();
+      return;
+    }
+
+    const payload = jwt.verify(token, SECRET) as any;
+
+    const clientId = crypto.randomUUID();
+
+    const client: Client = {
+      id: clientId,
+      socket,
+      username: payload.username,
+    };
+
+    clients.set(clientId, client);
+
+    console.log(
+      `[Spacegramm] ${client.username} connected`
+    );
+
+    socket.send(
+      JSON.stringify({
+        event: "system.connected",
+        payload: {
+          id: clientId,
+          username: client.username,
+        },
+      })
+    );
+
+    socket.send(
+      JSON.stringify({
+        event: "message.history",
+        payload: messages,
+      })
+    );
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data.toString());
+
+        if (data.event === "message.send") {
+          const message = {
+            id: crypto.randomUUID(),
+            username: client.username,
+            content: data.payload.content,
+            timestamp: Date.now(),
+          };
+
+          messages.push(message);
+
+          const encoded = JSON.stringify({
+            event: "message.new",
+            payload: message,
+          });
+
+          for (const [, connectedClient] of clients) {
+            connectedClient.socket.send(encoded);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    socket.onclose = () => {
+      clients.delete(clientId);
+
+      console.log(
+        `[Spacegramm] ${client.username} disconnected`
+      );
+    };
+  } catch (error) {
+    console.error(error);
+    socket.close();
+  }
+});
+
+server.listen(3000, () => {
+  console.log(
+    "[Spacegramm] Gateway running on http://localhost:3000"
+  );
+});
