@@ -90,7 +90,6 @@ export default app
 ⸻
 
 src/App.svelte
-
 <script>
   import Sidebar from './components/Sidebar.svelte'
   import ChatView from './components/ChatView.svelte'
