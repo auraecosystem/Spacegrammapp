@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+
+  "productName": "Spacegramm",
+  "version": "1.0.0",
+  "identifier": "com.spacegramm.desktop",
+
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+
+  "app": {
+    "windows": [
+      {
+        "title": "Spacegramm",
+        "width": 1400,
+        "height": 900
+      }
+    ]
+  },
+
+  "bundle": {
+    "active": true,
+    "targets": ["app"],
+    "icon": [
+      "icons/Icon.icns"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "12.0"
+    }
+  }
+}
