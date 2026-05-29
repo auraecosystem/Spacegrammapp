@@ -1,32 +1,34 @@
 <script lang="ts">
-  import { sendMessage } from "./lib/api";
+  import { invoke } from "@tauri-apps/api/tauri";
 
-  let input = "";
-  let log: string[] = [];
+  let msg = "";
+  let chat = [];
+  let aiInput = "";
 
   async function send() {
-    const res = await sendMessage("user", input);
-    log = [...log, res];
-    input = "";
+    const res = await invoke("send_message", { msg });
+    chat = [...chat, res];
+    msg = "";
+  }
+
+  async function askAI() {
+    const res = await invoke("chat", { input: aiInput });
+    chat = [...chat, res];
+    aiInput = "";
   }
 </script>
 
-<main>
-  <h1>Spacegramm</h1>
+<h1>Spacegramm Web4 Node</h1>
 
-  <input bind:value={input} placeholder="Type message..." />
-  <button on:click={send}>Send</button>
+<h2>Messaging</h2>
+<input bind:value={msg} />
+<button on:click={send}>Send</button>
 
-  <div>
-    {#each log as item}
-      <p>{item}</p>
-    {/each}
-  </div>
-</main>
+<h2>AI</h2>
+<input bind:value={aiInput} />
+<button on:click={askAI}>Ask AI</button>
 
-<style>
-  main {
-    font-family: sans-serif;
-    padding: 20px;
-  }
-</style>
+<h2>Log</h2>
+{#each chat as c}
+  <p>{c}</p>
+{/each}
