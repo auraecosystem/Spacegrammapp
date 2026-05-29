@@ -1,4 +1,4 @@
-# Spacegramm — Web4 AI-Native Messaging Platform
+ ## Spacegramm — Web4 AI-Native Messaging Platform
 
  ## Vision
 
