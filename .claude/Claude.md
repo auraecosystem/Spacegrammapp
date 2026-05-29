@@ -62,6 +62,8 @@ package.json
 
 ⸻
 
+
+
 vite.config.js
 
 import { defineConfig } from 'vite'
@@ -476,3 +478,6 @@ spacegramm/
 │       │   └── mod.rs
 │       └── storage/
 │           └── mod.rs
+
+
+> https://docs.openclaw.ai/gateway/configuration
