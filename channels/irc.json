@@ -6,10 +6,10 @@
       configWrites: true,
       nickserv: {
         enabled: true,
-        service: "NickServ",
+        service: "server",
         password: "${IRC_NICKSERV_PASSWORD}",
         register: false,
-        registerEmail: "bot@outlook.com",
+        registerEmail: "webapp4@outlook.com",
       },
     },
   },
